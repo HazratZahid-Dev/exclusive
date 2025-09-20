@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { SearchProvider } from "./components/SearchContex";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import { ReduxProvider } from "./reduxProvider";
+import { ReduxProvider } from "./ReduxProvider";
 
 const geist = Geist({
   subsets: ["latin"],
