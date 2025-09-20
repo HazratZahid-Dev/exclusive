@@ -1,0 +1,45 @@
+import Image from "next/image";
+
+const cate_data = [
+  {
+    id: 1,
+    cat_name: "Phone",
+    img: "/Category-cellPhone.svg",
+  },
+  {
+    id: 2,
+    cat_name: "Computers",
+    img: "/Category-Computer.svg",
+  },
+  {
+    id: 3,
+    cat_name: "SmartWatch",
+    img: "/Category-SmartWatch.svg",
+  },
+  {
+    id: 4,
+    cat_name: "Camera",
+    img: "/Category-Camera.svg",
+  },
+  {
+    id: 5,
+    cat_name: "Gaming",
+    img: "/Category-Gamepad.svg",
+  },
+];
+
+export default function CategoriesCard() {
+  return (
+    <div className="flex flex-wrap px-32 items-center justify-between gap-6 pt-10">
+      {cate_data.map((items) => (
+        <div
+          key={items.id}
+          className="w-[170px] h-[145px] border border-[#F5F5F5] flex items-center flex-col space-y-4 justify-center  rounded-sm "
+        >
+          <Image src={items.img} alt="arrow" width={56} height={56} />
+          <p>{items.cat_name}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
