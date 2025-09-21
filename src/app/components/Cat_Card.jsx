@@ -4,7 +4,7 @@ const cate_data = [
   {
     id: 1,
     cat_name: "Phone",
-    img: "/Category-cellPhone.svg",
+    img: "/Category-CellPhone.svg",
   },
   {
     id: 2,
