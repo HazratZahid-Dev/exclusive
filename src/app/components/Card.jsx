@@ -56,6 +56,7 @@ const settings = {
   dots: false,
   infinite: false,
   speed: 500,
+  arrows:false,
   slidesToShow: 4, // desktop
   slidesToScroll: 1,
   responsive: [
