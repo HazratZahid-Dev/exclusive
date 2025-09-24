@@ -285,11 +285,11 @@ export default function Home() {
         <Card ref={sliderRef} category={selectedCategory} viewAll={viewAll} />
       </div>
 
-      <div className="flex items-center justify-center my-14">
+      <div className="flex items-center justify-center my-7 lg:my-14">
         <Button
           btn_text={viewAll ? "Back to Slider" : "View All Products"}
-          btn_height="h-14"
-          btn_width="w-[234px]"
+          btn_height="h-9 lg:h-14"
+          btn_width="lg:w-[234px]"
           btn_color="bg-[#BD4444]"
           onClick={() => setViewAll(!viewAll)}
         />
@@ -336,8 +336,8 @@ export default function Home() {
           <Button
             onClick={() => setViewAll(!viewAll)}
             btn_text={viewAll ? "Best Selling" : "View All"}
-            btn_height="h-14"
-            btn_width="w-[159px]"
+            btn_height="h-9 lg:h-14"
+            btn_width="lg:w-[159px]"
             btn_color="bg-[#BD4444]"
           />
         </div>
