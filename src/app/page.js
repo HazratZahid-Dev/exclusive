@@ -306,7 +306,7 @@ export default function Home() {
           Browse By Category
         </h3>
 
-        <div className="flex items-center gap-x-2 ml-auto">
+        {/* <div className="flex items-center gap-x-2 ml-auto">
           <button
             type="button"
             className="w-11 h-11  bg-[#F5F5F5] rounded-full flex items-center justify-center"
@@ -319,7 +319,7 @@ export default function Home() {
           >
             <Image src="/rightArrow.svg" alt="arrow" width={16} height={16} />
           </button>
-        </div>
+        </div> */}
       </div>
       <CategoriesCard />
 
@@ -342,7 +342,7 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="mt-14 px-32 ">
+      <div className="mt-14 px-4 lg:px-32 ">
         {viewAll == true ? (
           <Card viewAll={viewAll} />
         ) : (
@@ -408,12 +408,12 @@ export default function Home() {
         <div className="bg-[#DB4444] h-10 w-5 rounded "></div>
         <p className="text-base text-[#DB4444] font-semibold">Our Products</p>
       </div>
-      <div className="flex items-center gap-x-20 mt-5 px-4 lg:px-32">
+      <div className="flex items-cente flex-col lg:flex-row gap-x-20 mt-5 px-4 lg:px-32">
         <h3 className="text-xl lg:text-4xl font-semibold lg:mt-3">
           Explore Our Products
         </h3>
 
-        <div className="flex items-center gap-x-2 ml-auto">
+        <div className="flex  mt-7 lg:mt-0 justify-center items-center gap-x-2 lg:ml-auto">
           <button
             type="button"
             onClick={() => sliderRef.current?.prev()}
@@ -430,7 +430,7 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <div className=" px-4 lg:px-32 ">
+      <div className=" px-4 mt-7 lg:mt-0 lg:px-32 ">
         <Card ref={sliderRef} />
       </div>
       <div className="flex items-center gap-x-4 px-4 lg:px-32 mt-10 lg:mt-20">

@@ -15,10 +15,10 @@ export default function TopNav() {
     "Arabic",
   ];
   return (
-    <nav className="relative bg-black text-xs  sm:text-sm  text-[#FAFAFA] w-full h-20 lg:h-12 flex  items-center justify-center px-4">
+    <nav className="relative bg-black text-xs  sm:text-sm  text-[#FAFAFA] w-full h-auto py-3 lg:py-0 lg:h-12 flex  items-center justify-center px-4">
       {/* Center content */}
       <div className="flex flex-wrap items-center justify-center gap-x-2 text-center">
-        <p className="whitespace-nowrap ">
+        <p className=" ">
           Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
         </p>
         <div className="flex flex-col items-center">

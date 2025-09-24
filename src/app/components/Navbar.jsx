@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSearchQuery } from "../slices/searchSlice";
 
 export default function Navbar() {
+    const wishlistItems = useSelector((state) => state.wishlist.items);
+  console.log("wishhh",wishlistItems.length)
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false); // ✅ for small screens
@@ -73,8 +75,13 @@ export default function Navbar() {
           />
           <Image src="/search.svg" alt="search" width={16} height={16} />
         </div>
-        <Link href="/wishlist">
-          <Image src="/favourit.svg" alt="wishlist" width={20} height={18} />
+          <Link href="/wishlist" className="relative">
+          {wishlistItems.length > 0 && (
+            <div className="bg-[#BD4444] flex items-center justify-center rounded-full w-4 h-4 absolute -top-2 -right-2 text-xs text-white">
+              <p>{wishlistItems.length}</p>
+            </div>
+          )}
+          <Image src="/favourit.svg" alt="cart" width={20} height={18} />
         </Link>
         <Link href="/cart" className="relative">
           {cartItems.length > 0 && (
@@ -161,8 +168,13 @@ export default function Navbar() {
 
           {/* Cart & Wishlist */}
           <div className="flex gap-6 mt-4">
-            <Link href="/wishlist" onClick={() => setMobileOpen(false)}>
-              <Image src="/favourit.svg" alt="wishlist" width={24} height={22} />
+               <Link href="/wishlist" className="relative" onClick={() => setMobileOpen(false)}>
+              {wishlistItems.length > 0 && (
+                <div className="bg-[#BD4444] flex items-center justify-center rounded-full w-5 h-5 absolute -top-2 -right-2 text-xs text-white">
+                  <p>{wishlistItems.length}</p>
+                </div>
+              )}
+              <Image src="/favourit.svg" alt="cart" width={24} height={22} />
             </Link>
             <Link href="/cart" className="relative" onClick={() => setMobileOpen(false)}>
               {cartItems.length > 0 && (

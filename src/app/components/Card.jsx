@@ -6,6 +6,9 @@ import { base_url } from "../config/api";
 import Slider from "react-slick";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCartAPI } from "../slices/cartSlice";
+import { addToWishlist } from "../slices/wishlistSlice";
+import { useRouter } from "next/navigation";
+import Loader from "./Loader";
 
 const Card = forwardRef(({ category, viewAll = false }, ref) => {
   const [data, setData] = useState([]);
@@ -14,6 +17,24 @@ const Card = forwardRef(({ category, viewAll = false }, ref) => {
   const searchQuery = useSelector((state) => state.search.query);
   const dispatch = useDispatch();
   let sliderRef = null;
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const [slidesToShow, setSlidesToShow] = useState(4);
+
+useEffect(() => {
+  const width = window.innerWidth;
+  if (width <= 480) setSlidesToShow(1);
+  else if (width <= 768) setSlidesToShow(1);
+  else if (width <= 1024) setSlidesToShow(2);
+   else if (width <= 1300) setSlidesToShow(3);
+  else setSlidesToShow(4);
+}, []);
+
 
   useImperativeHandle(ref, () => ({
     next: () => sliderRef?.slickNext(),
@@ -52,42 +73,45 @@ const Card = forwardRef(({ category, viewAll = false }, ref) => {
     dispatch(addToCartAPI(product));
   };
 
-const settings = {
-  dots: false,
-  infinite: false,
-  speed: 500,
-  arrows:false,
-  slidesToShow: 4, // desktop
-  slidesToScroll: 1,
-  responsive: [
-    {
-      breakpoint: 1024, // <= 1024px
-      settings: {
-        slidesToShow: 2,
-      },
-    },
-    {
-      breakpoint: 768, // <= 768px
-      settings: {
-        slidesToShow: 1,
-      },
-    },
-    {
-      breakpoint: 480, // <= 480px
-      settings: {
-        slidesToShow: 1,
-      },
-    },
-  ],
-};
+  const handleViewProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
 
-
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    arrows: false,
+   slidesToShow,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024, // <= 1024px
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 768, // <= 768px
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+      {
+        breakpoint: 480, // <= 480px
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
 
   return (
     <div className="lg:pt-10">
+    { isClient && (<>
       {loading ? (
         <div className="flex justify-center items-center h-60 ">
-          <div className="w-10 h-10 border-4 border-gray-300 border-t-[#BD4444] rounded-full animate-spin"></div>
+          <Loader />
         </div>
       ) : error ? (
         <p className="text-[#BD4444] text-center">Error: {error}</p>
@@ -99,9 +123,13 @@ const settings = {
                 {/* top badge */}
                 <div className="flex items-center justify-between">
                   <div className="bg-[#DB4444] text-white text-xs font-medium text-center w-14 h-6 flex items-center justify-center rounded">
-                    {items?.rating?.rate0 ? items?.rating?.rate0 : "0"}
+                    {items?.rating?.rate}
                   </div>
-                  <button className="w-9 h-9 cursor-pointer bg-white rounded-full flex items-center justify-center shadow">
+
+                  <button
+                    onClick={() => dispatch(addToWishlist(items))}
+                    className="w-9 h-9 cursor-pointer bg-white rounded-full flex items-center justify-center shadow"
+                  >
                     <Image
                       src="/favourit.svg"
                       alt="favorite"
@@ -125,7 +153,12 @@ const settings = {
 
                 {/* View Button */}
                 <button className="w-9 h-9 cursor-pointer absolute top-16 right-3 bg-white rounded-full flex items-center justify-center shadow">
-                  <Image src="/view.svg" alt="favorite" width={20} height={20} />
+                  <Image
+                    src="/view.svg"
+                    alt="favorite"
+                    width={20}
+                    height={20}
+                  />
                 </button>
 
                 {/* Add To Cart */}
@@ -139,15 +172,32 @@ const settings = {
                 </div>
               </div>
 
-              <h3 className="text-sm sm:text-base font-medium mt-4 truncate">
-                {items.title}
-              </h3>
+              <div className="space-y-2 mt-4">
+                <h3 className="text-sm sm:text-base font-medium mt-4 truncate">
+                  {items.title}
+                </h3>
 
-              <div className="flex items-center gap-x-3">
-                <p className="text-[#DB4444] font-medium">
-                  ${items?.price ? (items.price * 0.8).toFixed(2) : ""}
-                </p>
-                <p className="text-gray-400 line-through">${items?.price}</p>
+                <div className="flex items-center gap-x-3">
+                  <p className="text-[#DB4444] font-medium">
+                    ${items?.price ? (items.price * 0.8).toFixed(2) : ""}
+                  </p>
+                  <p className="text-gray-400 line-through">${items?.price}</p>
+                </div>
+                <div className="flex items-center">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Image
+                      key={i}
+                      src={
+                        i < Math.round(items?.rating?.rate)
+                          ? "/star.svg"
+                          : "/empty-star.svg"
+                      }
+                      alt="rating"
+                      width={20}
+                      height={20}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           ))}
@@ -161,9 +211,12 @@ const settings = {
                   {/* top badge */}
                   <div className="flex items-center justify-between">
                     <div className="bg-[#DB4444] text-white text-xs font-medium text-center w-14 h-6 flex items-center justify-center rounded">
-                      {items?.rating?.rate0 ? items?.rating?.rate0 : "0"}
+                      {items?.rating?.rate}
                     </div>
-                    <button className="w-9 h-9 cursor-pointer bg-white rounded-full flex items-center justify-center shadow">
+                    <button
+                      onClick={() => dispatch(addToWishlist(items))}
+                      className="w-9 h-9 cursor-pointer outline-none bg-white rounded-full flex items-center justify-center shadow"
+                    >
                       <Image
                         src="/favourit.svg"
                         alt="favorite"
@@ -186,7 +239,10 @@ const settings = {
                   </div>
 
                   {/* View Button */}
-                  <button className="w-9 h-9 cursor-pointer absolute top-16 right-3 bg-white rounded-full flex items-center justify-center shadow">
+                  <button
+                    onClick={() => handleViewProduct(items.id)}
+                    className="w-9 h-9 cursor-pointer outline-none absolute top-16 right-3 bg-white rounded-full flex items-center justify-center shadow"
+                  >
                     <Image
                       src="/view.svg"
                       alt="favorite"
@@ -206,21 +262,43 @@ const settings = {
                   </div>
                 </div>
 
-                <h3 className="text-sm sm:text-base font-medium mt-4 truncate">
-                  {items.title}
-                </h3>
+                <div className="space-y-2 mt-4">
+                  <h3 className="text-sm sm:text-base font-medium mt-4 truncate">
+                    {items.title}
+                  </h3>
 
-                <div className="flex items-center gap-x-3">
-                  <p className="text-[#DB4444] font-medium">
-                    ${items?.price ? (items.price * 0.8).toFixed(2) : ""}
-                  </p>
-                  <p className="text-gray-400 line-through">${items?.price}</p>
+                  <div className="flex items-center gap-x-3">
+                    <p className="text-[#DB4444] font-medium">
+                      ${items?.price ? (items.price * 0.8).toFixed(2) : ""}
+                    </p>
+                    <p className="text-gray-400 line-through">
+                      ${items?.price}
+                    </p>
+                  </div>
+                  <div className="flex items-center">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <Image
+                        key={i}
+                        src={
+                          i < Math.round(items?.rating?.rate)
+                            ? "/star.svg"
+                            : "/empty-star.svg"
+                        }
+                        alt="rating"
+                        width={20}
+                        height={20}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </Slider>
       )}
+    </>
+    )}
+      
     </div>
   );
 });

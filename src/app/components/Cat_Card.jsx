@@ -30,13 +30,21 @@ const cate_data = [
 
 export default function CategoriesCard() {
   return (
-    <div className="flex flex-wrap px-32 items-center justify-between gap-6 pt-10">
+    <div className="flex flex-wrap px-4 mx-auto lg:px-32 !items-center justify-center lg:justify-between gap-6 pt-10">
       {cate_data.map((items) => (
         <div
           key={items.id}
-          className="w-[170px] h-[145px] border border-[#F5F5F5] flex items-center flex-col space-y-4 justify-center  rounded-sm "
+          className="w-[170px] cursor-pointer h-[145px] border border-[#F5F5F5] flex items-center flex-col space-y-4 justify-center rounded-sm 
+               transition-colors duration-700 ease-in-out 
+               bg-white hover:bg-[#BD4433] hover:text-white group"
         >
-          <Image src={items.img} alt="arrow" width={56} height={56} />
+          <Image
+            src={items.img}
+            alt="arrow"
+            width={56}
+            height={56}
+            className="transition duration-700 ease-in-out group-hover:brightness-0 group-hover:invert"
+          />
           <p>{items.cat_name}</p>
         </div>
       ))}

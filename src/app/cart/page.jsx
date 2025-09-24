@@ -36,7 +36,7 @@ export default function About() {
     });
   };
 
-  if (loading) return <p>Adding to cart...</p>;
+  if (loading) return <p className="text-center py-5 lg:py-10">Adding to cart...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
   // Calculate totals
