@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import Button from "../components/Button";
+import { useRouter } from "next/navigation";
 
 export default function About() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const {
     items: cartItems,
     loading,
@@ -44,6 +46,9 @@ export default function About() {
     (total, item) => total + item.price * (quantities[item.id] || 1),
     0
   );
+   const handleCheckOut = () => {
+    router.push(`/check-out`);
+  };
 
   return (
     <div>
@@ -192,6 +197,7 @@ export default function About() {
           </div>
           <div className="flex items-center justify-center mt-6">
             <Button
+            onClick={handleCheckOut}
               btn_text="Proceed to Checkout"
               btn_height="h-14"
               btn_width="w-full sm:w-[260px]"
